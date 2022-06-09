@@ -9,6 +9,7 @@ import java.sql.Date;
 @Getter
 public class BookDetails {
 
+    private int id;
     private String title;
     private int categoryId;
     private int authorId;

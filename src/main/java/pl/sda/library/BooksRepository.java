@@ -16,4 +16,5 @@ public interface BooksRepository {
 
     void createBook(BookDetails bookDetails) throws SQLException;
 
+    void updateBook(BookDetails bookDetails) throws SQLException;
 }
