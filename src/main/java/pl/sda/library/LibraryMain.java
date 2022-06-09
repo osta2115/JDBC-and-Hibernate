@@ -29,7 +29,8 @@ public class LibraryMain {
 
             //testCreateBook(booksRepository);
             //testDeleteBookById(booksRepository, 51);
-            testUpdateBook(booksRepository);
+            //testUpdateBook(booksRepository);
+            testGetBooksCount(booksRepository);
 
         } catch (SQLException e) {
             log.error("Something went wrong", e);
@@ -83,6 +84,11 @@ public class LibraryMain {
                 .releaseDate(Date.valueOf(LocalDate.of(2022,5,5)))
                 .build();
         booksJDBCRepository.updateBook(bookDetails);
+    }
+
+    private static void testGetBooksCount(BooksJDBCRepository booksJDBCRepository) throws SQLException {
+        long booksCount = booksJDBCRepository.getBooksCount();
+        log.info("Number of all books: {}", booksCount);
     }
 }
 

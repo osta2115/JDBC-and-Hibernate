@@ -2,8 +2,10 @@ package pl.sda.library;
 
 import lombok.RequiredArgsConstructor;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -118,6 +120,15 @@ public class BooksJDBCRepository implements BooksRepository {
         preparedStatement.setDate(5, bookDetails.getReleaseDate());
         preparedStatement.setInt(6,bookDetails.getId());
         preparedStatement.executeUpdate();
+
+    }
+
+    @Override
+    public long getBooksCount() throws SQLException {
+        CallableStatement callableStatement = connection.prepareCall("{call get_books_count(?)}");
+        callableStatement.registerOutParameter(1, Types.BIGINT);
+        callableStatement.execute();
+        return callableStatement.getLong(1);
 
     }
 
