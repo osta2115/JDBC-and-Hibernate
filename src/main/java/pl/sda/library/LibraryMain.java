@@ -13,7 +13,14 @@ public class LibraryMain {
 
 
     public static void main(String[] args) {
-        try(var connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/library", "admin", "Password1")) {
+
+//        try (var connection = ConnectionFactory.createH2Connection()) {
+//            log.info("Successfully connected to H2 DB");
+//        } catch (SQLException e) {
+//            log.error("Something went wrong", e);
+//        }
+
+        try(var connection = ConnectionFactory.createMySqlConnection()) {
             var booksRepository = new BooksJDBCRepository(connection);
             //int requestedBookId = 3;
 
