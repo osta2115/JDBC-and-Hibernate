@@ -4,7 +4,9 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -20,10 +22,37 @@ public class HibernateMain {
 
 
         addProducts();
+        updateProductPriceInMeatCategory();
 
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void updateProductPriceInMeatCategory() {
+        entityManager.getTransaction().begin();
+
+        String selectAllProductsWithMeatCategory = """
+                select p from Product p
+                join p.productCategory pc
+                where pc.name = :category
+                """;
+        TypedQuery<Product> query = entityManager.createQuery(selectAllProductsWithMeatCategory, Product.class);
+        query.setParameter("category", "Meat");
+        var productsInMeatCategory = query.getResultStream();
+        productsInMeatCategory.forEach(decreasePrice());
+
+
+        entityManager.getTransaction().commit();
+    }
+
+    private static Consumer<Product> decreasePrice() {
+        return product -> {
+            log.info("{} - old info", product);
+            product.decreasePrice(BigDecimal.valueOf(2.00));
+            product.setUpdateDatetime(LocalDateTime.now());
+            log.info("{} - new info", product);
+        };
     }
 
     private static void getAllProducts() {

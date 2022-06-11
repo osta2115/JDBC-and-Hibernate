@@ -1,15 +1,18 @@
 package pl.sda.introduction.hibernate;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 @ToString
 @Entity
 @Table(name = "products")
 @Setter
+@Getter
 public class Product {
 
     @Id
@@ -27,4 +30,13 @@ public class Product {
     @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category_id", nullable = false)
     private ProductCategory productCategory;
+
+    @Column(name = "update_datetime")
+    private LocalDateTime updateDatetime;
+
+    void decreasePrice(BigDecimal decreasValue) {
+        var currentPriceValue = price.getPriceValue();
+        var newPriceValue = currentPriceValue.subtract(decreasValue);
+        price.setPriceValue(newPriceValue);
+    }
 }

@@ -1,5 +1,6 @@
 package pl.sda.introduction.hibernate;
 
+import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
@@ -10,6 +11,7 @@ import java.math.BigDecimal;
 @ToString
 @Setter
 @Embeddable
+@Getter
 public class Price {
 
     @Column(name = "price_value")
