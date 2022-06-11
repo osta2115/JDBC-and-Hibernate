@@ -28,7 +28,9 @@ public class LibraryMain {
 //            testGetBookById(booksRepository, requestedBookId);
 
             //testCreateBook(booksRepository);
-            testDeleteBookById(booksRepository, 51);
+            //testDeleteBookById(booksRepository, 51);
+            //testUpdateBook(booksRepository);
+            testGetBooksCount(booksRepository);
 
         } catch (SQLException e) {
             log.error("Something went wrong", e);
@@ -70,6 +72,23 @@ public class LibraryMain {
 
     private static void logBookBasicInfo(BookBasicInfo bookBasicInfo) {
         log.info("Found book: id: {}, title: {}", bookBasicInfo.getId(), bookBasicInfo.getTitle());
+    }
+
+    private static void testUpdateBook(BooksJDBCRepository booksJDBCRepository) throws SQLException {
+        var bookDetails = BookDetails.builder()
+                .id(5)
+                .title("New title")
+                .authorId(5)
+                .categoryId(5)
+                .publisher("New publisher")
+                .releaseDate(Date.valueOf(LocalDate.of(2022,5,5)))
+                .build();
+        booksJDBCRepository.updateBook(bookDetails);
+    }
+
+    private static void testGetBooksCount(BooksJDBCRepository booksJDBCRepository) throws SQLException {
+        long booksCount = booksJDBCRepository.getBooksCount();
+        log.info("Number of all books: {}", booksCount);
     }
 }
 
