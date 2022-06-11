@@ -21,6 +21,10 @@ public class Product {
 
 //    @Transient
 //    private String myField;
+    @Embedded
+    private Price price;
 
-    private BigDecimal price;
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "category_id", nullable = false)
+    private ProductCategory productCategory;
 }

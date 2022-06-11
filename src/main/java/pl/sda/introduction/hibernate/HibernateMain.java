@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.stream.Stream;
 
 @Slf4j
 public class HibernateMain {
@@ -17,12 +18,40 @@ public class HibernateMain {
         entityManagerFactory = Persistence.createEntityManagerFactory("h2testdb");
         entityManager = entityManagerFactory.createEntityManager();
 
+
         addProducts();
 
-//        TypedQuery<Product> productTypedQuery = entityManager.createQuery("select p from Product p", Product.class);
-//        List<Product> resultList = productTypedQuery.getResultList();
-//        log.info("My products: {}", resultList);
 
+        entityManager.close();
+        entityManagerFactory.close();
+    }
+
+    private static void getAllProducts() {
+        TypedQuery<Product> productTypedQuery = entityManager.createQuery("select p from Product p", Product.class);
+        List<Product> resultList = productTypedQuery.getResultList();
+        log.info("My products: {}", resultList);
+    }
+
+    private static void filterProducts() {
+        var selectProductWithSpecificPrice = """
+                select p from Product p
+                where p.price.priceValue > :providedPrice
+                or p.productDescription like :description
+                """;
+        TypedQuery<Product> query = entityManager.createQuery(selectProductWithSpecificPrice, Product.class);
+        query.setParameter("providedPrice", BigDecimal.valueOf(10));
+        query.setParameter("description", "%" + "oes" + "%");
+        Stream<Product> filteredProducts = query.getResultStream();
+        filteredProducts.forEach(product -> log.info("{}", product));
+    }
+
+    private static ProductCategory createCategory(String name) {
+        var productCategory = new ProductCategory();
+        productCategory.setName(name);
+        return productCategory;
+    }
+
+    private static void showProductStats() {
         String sql = """
                 select new pl.sda.introduction.hibernate.ProductStats(
                 max(p.price), 
@@ -37,26 +66,50 @@ public class HibernateMain {
         log.info("Min: {}", singleResult.getMin());
         log.info("Avg: {}", singleResult.getAvg());
         log.info("Sum: {}", singleResult.getSum());
-
-        entityManager.close();
-        entityManagerFactory.close();
     }
 
     private static void addProducts() {
+        var vegetables = createCategory("Vegetables");
+        var other = createCategory("Other");
+        var meat = createCategory("Meat");
+
+        var chips = createProduct("Chips", BigDecimal.valueOf(5.99));
+        chips.setProductCategory(other);
+
+        var chicken = createProduct("Chicken", BigDecimal.valueOf(15.25));
+        chicken.setProductCategory(meat);
+
+        var pizza = createProduct("Pizza", BigDecimal.valueOf(20.00));
+        pizza.setProductCategory(other);
+
+        var fish = createProduct("Fish", BigDecimal.valueOf(10.00));
+        fish.setProductCategory(meat);
+
+        var potatoes = createProduct("Potatoes", BigDecimal.valueOf(3.00));
+        potatoes.setProductCategory(vegetables);
+
+        var tomatoes = createProduct("Tomatoes", BigDecimal.valueOf(6.67));
+        tomatoes.setProductCategory(vegetables);
+
         entityManager.getTransaction().begin();
-        createProduct("Chips", BigDecimal.valueOf(5.99));
-        createProduct("Fish", BigDecimal.valueOf(10.00));
-        createProduct("Potatoes", BigDecimal.valueOf(3.00));
-        createProduct("Tomatoes", BigDecimal.valueOf(6.67));
-        createProduct("Chicken", BigDecimal.valueOf(15.25));
-        createProduct("Pizza", BigDecimal.valueOf(20.00));
+
+        entityManager.persist(chips);
+        entityManager.persist(chicken);
+        entityManager.persist(pizza);
+        entityManager.persist(tomatoes);
+        entityManager.persist(potatoes);
+        entityManager.persist(fish);
+
         entityManager.getTransaction().commit();
     }
 
-    private static void createProduct(String description, BigDecimal price) {
+    private static Product createProduct(String description, BigDecimal priceValue) {
         var product = new Product();
         product.setProductDescription(description);
+        var price = new Price();
+        price.setPriceValue(priceValue);
+        price.setCurrency("PLN");
         product.setPrice(price);
-        entityManager.persist(product);
+        return product;
     }
 }

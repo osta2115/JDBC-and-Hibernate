@@ -7,11 +7,17 @@ import lombok.ToString;
 import java.math.BigDecimal;
 
 @Getter
-@RequiredArgsConstructor
 public class ProductStats {
 
     private final BigDecimal max;
     private final BigDecimal min;
-    private final double avg;
+    private final BigDecimal avg;
     private final BigDecimal sum;
+
+    public ProductStats(BigDecimal max, BigDecimal min, double avg, BigDecimal sum) {
+        this.max = max;
+        this.min = min;
+        this.avg = BigDecimal.valueOf(avg);
+        this.sum = sum;
+    }
 }
