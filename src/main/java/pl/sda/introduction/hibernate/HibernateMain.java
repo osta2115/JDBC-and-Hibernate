@@ -17,7 +17,7 @@ public class HibernateMain {
     private static EntityManager entityManager;
 
     public static void main(String[] args) {
-        entityManagerFactory = Persistence.createEntityManagerFactory("h2testdb");
+        entityManagerFactory = Persistence.createEntityManagerFactory("mysql-shop");
         entityManager = entityManagerFactory.createEntityManager();
 
 
