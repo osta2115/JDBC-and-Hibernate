@@ -7,6 +7,7 @@ import lombok.ToString;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Entity
@@ -43,6 +44,9 @@ public class Product {
         var newPriceValue = currentPriceValue.subtract(decreasValue);
         price.setPriceValue(newPriceValue);
     }
+
+    @ManyToMany(mappedBy = "products")
+    private List<Customer> customers;
 
     @Override
     public String toString() {

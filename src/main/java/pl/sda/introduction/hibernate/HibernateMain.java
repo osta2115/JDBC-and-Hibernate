@@ -24,6 +24,7 @@ public class HibernateMain {
 
         addProductsWithDetails();
         updateProductPriceInMeatCategory();
+        addCustomerWithProducts();
 
         var query = entityManager.createQuery("select pc from ProductCategory pc ", ProductCategory.class);
         var allCategories = query.getResultList();
@@ -40,6 +41,18 @@ public class HibernateMain {
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void addCustomerWithProducts() {
+        var productsQuery = entityManager.createQuery("select p from Product p", Product.class);
+        var products = productsQuery.getResultList();
+
+        var customer = new Customer();
+        customer.setProducts(products);
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(customer);
+        entityManager.getTransaction().commit();
     }
 
     private static void updateProductPriceInMeatCategory() {
