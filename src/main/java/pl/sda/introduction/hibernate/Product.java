@@ -8,7 +8,7 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@ToString
+
 @Entity
 @Table(name = "products")
 @Setter
@@ -34,9 +34,24 @@ public class Product {
     @Column(name = "update_datetime")
     private LocalDateTime updateDatetime;
 
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "product_details_id", nullable = false)
+    private ProductDetails productDetails;
+
     void decreasePrice(BigDecimal decreasValue) {
         var currentPriceValue = price.getPriceValue();
         var newPriceValue = currentPriceValue.subtract(decreasValue);
         price.setPriceValue(newPriceValue);
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", productDescription='" + productDescription + '\'' +
+                ", price=" + price +
+                ", productCategory=" + productCategory +
+                ", updateDatetime=" + updateDatetime +
+                '}';
     }
 }

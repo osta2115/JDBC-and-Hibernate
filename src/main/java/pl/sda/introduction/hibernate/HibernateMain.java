@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.function.Consumer;
@@ -21,9 +22,21 @@ public class HibernateMain {
         entityManager = entityManagerFactory.createEntityManager();
 
 
-        addProducts();
+        addProductsWithDetails();
         updateProductPriceInMeatCategory();
 
+        var query = entityManager.createQuery("select pc from ProductCategory pc ", ProductCategory.class);
+        var allCategories = query.getResultList();
+
+        allCategories.forEach(
+                productCategory -> log.info("Products in category {}: {}",
+                        productCategory.getName(), productCategory.getProducts()));
+
+        var queryProductsWithDetails = entityManager.createQuery("select p from Product p", Product.class);
+        List<Product> resultList = queryProductsWithDetails.getResultList();
+        for (Product product : resultList) {
+            log.info("Product with details: {}", product);
+        }
 
         entityManager.close();
         entityManagerFactory.close();
@@ -122,14 +135,35 @@ public class HibernateMain {
 
         entityManager.getTransaction().begin();
 
-        entityManager.persist(chips);
         entityManager.persist(chicken);
+        entityManager.persist(chips);
         entityManager.persist(pizza);
         entityManager.persist(tomatoes);
         entityManager.persist(potatoes);
         entityManager.persist(fish);
 
         entityManager.getTransaction().commit();
+
+    }
+
+    private static void addProductsWithDetails() {
+        var meat = createCategory("Meat");
+        var chicken = createProduct("Chicken", BigDecimal.valueOf(15.25));
+        chicken.setProductCategory(meat);
+
+        var productDetailsChicken = new ProductDetails();
+        productDetailsChicken.setCarbonaceous(40);
+        productDetailsChicken.setFat(15);
+        productDetailsChicken.setProtein(45);
+        productDetailsChicken.setExpiryDate(LocalDate.of(2021,9,1));
+        productDetailsChicken.setKcal(150);
+        productDetailsChicken.setProduct(chicken);
+        chicken.setProductDetails(productDetailsChicken);
+
+        entityManager.getTransaction().begin();
+        entityManager.persist(chicken);
+        entityManager.getTransaction().commit();
+
     }
 
     private static Product createProduct(String description, BigDecimal priceValue) {
