@@ -29,6 +29,8 @@
     <persistence-unit name="mysql-library" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <class>pl.sda.library.common.BookDetails</class>
+        <class>pl.sda.library.common.Category</class>
+        <class>pl.sda.library.common.Author</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

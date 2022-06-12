@@ -101,8 +101,8 @@ public class BooksJDBCRepository implements BooksRepository {
                 """;
         var preparedStatement = connection.prepareStatement(insertBook);
         preparedStatement.setString(1, bookDetails.getTitle());
-        preparedStatement.setInt(2, bookDetails.getCategoryId());
-        preparedStatement.setInt(3, bookDetails.getAuthorId());
+        preparedStatement.setInt(2, bookDetails.getCategory().getId());
+        preparedStatement.setInt(3, bookDetails.getAuthor().getId());
         preparedStatement.setString(4, bookDetails.getPublisher());
         preparedStatement.setDate(5, bookDetails.getReleaseDate());
         preparedStatement.executeUpdate();
@@ -117,8 +117,8 @@ public class BooksJDBCRepository implements BooksRepository {
                 """;
         var preparedStatement = connection.prepareStatement(updateBook);
         preparedStatement.setString(1, bookDetails.getTitle());
-        preparedStatement.setInt(2, bookDetails.getCategoryId());
-        preparedStatement.setInt(3, bookDetails.getAuthorId());
+        preparedStatement.setInt(2, bookDetails.getCategory().getId());
+        preparedStatement.setInt(3, bookDetails.getAuthor().getId());
         preparedStatement.setString(4, bookDetails.getPublisher());
         preparedStatement.setDate(5, bookDetails.getReleaseDate());
         preparedStatement.setInt(6,bookDetails.getId());

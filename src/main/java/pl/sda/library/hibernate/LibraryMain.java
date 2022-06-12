@@ -1,6 +1,6 @@
 package pl.sda.library.hibernate;
 
-import javax.persistence.EntityManagerFactory;
+
 import javax.persistence.Persistence;
 
 public class LibraryMain {
