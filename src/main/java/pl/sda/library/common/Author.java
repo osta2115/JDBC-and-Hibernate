@@ -21,7 +21,6 @@ public class Author {
     @Column(name = "first_name", length = 32)
     private String firstName;
 
-
     @Column(name = "last_name", length = 32)
     private String lastName;
 }

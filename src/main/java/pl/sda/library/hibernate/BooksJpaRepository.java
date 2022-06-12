@@ -49,7 +49,19 @@ public class BooksJpaRepository implements BooksRepository {
     }
 
     @Override
-    public void deleteBookById(int bookId) throws SQLException {
+    public void deleteBookById(int id) throws SQLException {
+
+        try {
+            entityManager.getTransaction().begin();
+            var selectedBookToRemove = "select bd from BookDetails bd where bd.id = :id";
+            var query = entityManager.createQuery(selectedBookToRemove, BookDetails.class);
+            query.setParameter("id", id);
+            var bookDetails = query.getSingleResult();
+            entityManager.remove(bookDetails);
+            entityManager.getTransaction().commit();
+        } catch (NoResultException e) {
+            log.warn("Cannot delete non-exist book. Book id: {}", id);
+        }
 
     }
 

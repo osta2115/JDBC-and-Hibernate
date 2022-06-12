@@ -1,17 +1,18 @@
 package pl.sda.library.common;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Date;
+import java.util.Set;
 
 @Builder
 @Getter
 @Setter
 @Entity
 @Table(name = "books")
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@AllArgsConstructor(access = AccessLevel.PRIVATE)
 public class BookDetails {
 
     @Id
@@ -33,4 +34,7 @@ public class BookDetails {
 
     @Column(name = "release_date")
     private Date releaseDate;
+
+    @OneToMany(cascade = CascadeType.REMOVE, mappedBy = "bookDetails")
+    private Set<Rent> rents;
 }

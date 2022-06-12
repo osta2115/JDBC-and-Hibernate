@@ -31,6 +31,7 @@
         <class>pl.sda.library.common.BookDetails</class>
         <class>pl.sda.library.common.Category</class>
         <class>pl.sda.library.common.Author</class>
+        <class>pl.sda.library.common.Rent</class>
         <exclude-unlisted-classes>true</exclude-unlisted-classes>
         <properties>
             <property name="javax.persistence.jdbc.driver" value="com.mysql.cj.jdbc.Driver"/>

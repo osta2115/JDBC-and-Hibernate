@@ -23,10 +23,14 @@ public class LibraryMain {
         entityManager = entityManagerFactory.createEntityManager();
         booksJpaRepository = new BooksJpaRepository(entityManager);
 
-
+        testDeleteBookById();
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void testDeleteBookById() throws SQLException {
+        booksJpaRepository.deleteBookById(50);
     }
 
     private static void testBookBasicInfoById() throws SQLException {

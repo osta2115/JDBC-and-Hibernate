@@ -20,7 +20,6 @@ public class Category {
     @Column(length = 32)
     private String name;
 
-
     @Column(length = 64)
     private String description;
 }
