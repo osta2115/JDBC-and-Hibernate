@@ -49,6 +49,7 @@ public class HibernateMain {
 
         var customer = new Customer();
         customer.setProducts(products);
+        customer.setCustomerStatus(CustomerStatus.STANDARD);
 
         entityManager.getTransaction().begin();
         entityManager.persist(customer);

@@ -23,4 +23,8 @@ public class Customer {
             @JoinColumn(name="product_id", referencedColumnName="id")
     )
     private List<Product> products;
+
+    @Column(name = "customer_status", nullable = false)
+    @Enumerated(EnumType.STRING)
+    private CustomerStatus customerStatus;
 }

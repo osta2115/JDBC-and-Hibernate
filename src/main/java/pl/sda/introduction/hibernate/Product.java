@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
-
+@ToString
 @Entity
 @Table(name = "products")
 @Setter
@@ -48,14 +48,4 @@ public class Product {
     @ManyToMany(mappedBy = "products")
     private List<Customer> customers;
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", productDescription='" + productDescription + '\'' +
-                ", price=" + price +
-                ", productCategory=" + productCategory +
-                ", updateDatetime=" + updateDatetime +
-                '}';
-    }
 }

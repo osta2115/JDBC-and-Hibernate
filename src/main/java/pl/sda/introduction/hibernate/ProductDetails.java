@@ -10,7 +10,6 @@ import java.time.LocalDate;
 @Entity
 @Setter
 @Getter
-@ToString
 public class ProductDetails {
 
     @Id
@@ -35,4 +34,16 @@ public class ProductDetails {
     @OneToOne(mappedBy = "productDetails")
     @JoinColumn(name = "product_id")
     private Product product;
+
+    @Override
+    public String toString() {
+        return "ProductDetails{" +
+                "id=" + id +
+                ", carbonaceous=" + carbonaceous +
+                ", protein=" + protein +
+                ", fat=" + fat +
+                ", kcal=" + kcal +
+                ", expiryDate=" + expiryDate +
+                '}';
+    }
 }
