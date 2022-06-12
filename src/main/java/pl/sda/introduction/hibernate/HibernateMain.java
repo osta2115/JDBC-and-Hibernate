@@ -6,8 +6,10 @@ import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.function.Function;
 import java.util.stream.Stream;
 
 @Slf4j
@@ -21,7 +23,7 @@ public class HibernateMain {
         entityManagerFactory = Persistence.createEntityManagerFactory("mysql-shop");
         entityManager = entityManagerFactory.createEntityManager();
 
-
+        initCustomerStatuses();
         addProductsWithDetails();
         updateProductPriceInMeatCategory();
         addCustomerWithProducts();
@@ -188,5 +190,32 @@ public class HibernateMain {
         price.setCurrency("PLN");
         product.setPrice(price);
         return product;
+    }
+
+    private static void initCustomerStatuses() {
+        entityManager.getTransaction().begin();
+//        for (var customerStatus : CustomerStatus.values()) {
+//            var status = new Status();
+//            status.setName(customerStatus.name());
+//            entityManager.persist(status);
+//        }
+        Arrays.stream(CustomerStatus.values())
+                        .map(HibernateMain::toStatusV2)
+                        .forEach(entityManager::persist);
+        entityManager.getTransaction().commit();
+    }
+
+    private static Function<CustomerStatus, Status> toStatus() {
+        return customerStatus -> {
+            var status = new Status();
+            status.setName(customerStatus.name());
+            return status;
+        };
+    }
+
+    private static Status toStatusV2(CustomerStatus customerStatus) {
+        var status = new Status();
+        status.setName(customerStatus.name());
+        return status;
     }
 }
