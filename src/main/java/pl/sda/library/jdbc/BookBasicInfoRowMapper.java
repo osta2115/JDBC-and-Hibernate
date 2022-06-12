@@ -1,4 +1,6 @@
-package pl.sda.library;
+package pl.sda.library.jdbc;
+
+import pl.sda.library.common.BookBasicInfo;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

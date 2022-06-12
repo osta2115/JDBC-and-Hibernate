@@ -1,9 +1,10 @@
-package pl.sda.library;
+package pl.sda.library.jdbc;
 
 import lombok.extern.slf4j.Slf4j;
+import pl.sda.library.common.BookBasicInfo;
+import pl.sda.library.common.BookDetails;
 
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.List;

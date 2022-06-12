@@ -1,4 +1,4 @@
-package pl.sda.library;
+package pl.sda.library.common;
 
 import lombok.Builder;
 import lombok.Getter;

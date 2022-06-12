@@ -1,4 +1,4 @@
-package pl.sda.library;
+package pl.sda.library.jdbc;
 
 import org.h2.jdbcx.JdbcDataSource;
 

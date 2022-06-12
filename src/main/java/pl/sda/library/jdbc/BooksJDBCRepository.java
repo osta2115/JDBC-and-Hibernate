@@ -1,6 +1,9 @@
-package pl.sda.library;
+package pl.sda.library.jdbc;
 
 import lombok.RequiredArgsConstructor;
+import pl.sda.library.common.BookBasicInfo;
+import pl.sda.library.common.BookDetails;
+import pl.sda.library.common.BooksRepository;
 
 import java.sql.CallableStatement;
 import java.sql.Connection;

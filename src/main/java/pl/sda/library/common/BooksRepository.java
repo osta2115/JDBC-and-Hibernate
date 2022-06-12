@@ -1,4 +1,4 @@
-package pl.sda.library;
+package pl.sda.library.common;
 
 import java.sql.SQLException;
 import java.util.List;
