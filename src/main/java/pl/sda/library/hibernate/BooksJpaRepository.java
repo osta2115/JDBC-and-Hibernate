@@ -8,7 +8,6 @@ import pl.sda.library.common.BooksRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +59,7 @@ public class BooksJpaRepository implements BooksRepository {
             entityManager.remove(bookDetails);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
-            log.warn("Cannot delete non-exist book. Book id: {}", id);
+            log.warn("Cannot delete non-existing book. Book id: {}", id);
         }
 
     }
