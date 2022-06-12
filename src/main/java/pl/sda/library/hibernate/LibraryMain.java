@@ -2,14 +2,18 @@ package pl.sda.library.hibernate;
 
 
 import lombok.extern.slf4j.Slf4j;
+import pl.sda.library.common.Author;
 import pl.sda.library.common.BookBasicInfo;
+import pl.sda.library.common.BookDetails;
+import pl.sda.library.common.Category;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Slf4j
 public class LibraryMain {
@@ -23,10 +27,32 @@ public class LibraryMain {
         entityManager = entityManagerFactory.createEntityManager();
         booksJpaRepository = new BooksJpaRepository(entityManager);
 
-        testGetBooksCount();
+        testCreateBook();
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void testCreateBook() throws SQLException {
+        var simpleCategory = new Category();
+        simpleCategory.setId(100);
+        simpleCategory.setName("Simple category");
+
+        var simpleAuthor = new Author();
+        simpleAuthor.setId(100);
+        simpleAuthor.setFirstName("Simple Firstname");
+        simpleAuthor.setLastName("Simple Lastname");
+
+
+        var bookDetails = BookDetails.builder()
+                        .id(100)
+                        .title("Simple title")
+                        .publisher("Simple publisher")
+                        .category(simpleCategory)
+                        .author(simpleAuthor)
+                        .releaseDate(Date.valueOf(LocalDate.of(2020, 7,31)))
+                        .build();
+        booksJpaRepository.createBook(bookDetails);
     }
 
     private static void testGetBooksCount() throws SQLException {

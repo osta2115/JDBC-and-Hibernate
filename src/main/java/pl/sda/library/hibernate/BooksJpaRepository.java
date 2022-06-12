@@ -8,7 +8,6 @@ import pl.sda.library.common.BooksRepository;
 
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
@@ -72,7 +71,9 @@ public class BooksJpaRepository implements BooksRepository {
 
     @Override
     public void createBook(BookDetails bookDetails) throws SQLException {
-
+        entityManager.getTransaction().begin();
+        entityManager.persist(bookDetails);
+        entityManager.getTransaction().commit();
     }
 
     @Override
