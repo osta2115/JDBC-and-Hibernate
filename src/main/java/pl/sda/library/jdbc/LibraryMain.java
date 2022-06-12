@@ -46,13 +46,13 @@ public class LibraryMain {
     }
 
     private static void testCreateBook(BooksJDBCRepository booksJDBCRepository) throws SQLException {
-        var bookDetails = BookDetails.builder()
-                .title("Newly created book")
+        var bookDetails = new BookDetails();
+        bookDetails.setTitle("Newly created book");
 //                .authorId(1)
 //                .categoryId(3)
-                .publisher("Helion")
-                .releaseDate(Date.valueOf(LocalDate.of(2022,5,9)))
-                .build();
+        bookDetails.setPublisher("Helion");
+        bookDetails.setReleaseDate(Date.valueOf(LocalDate.of(2022,5,9)));
+
         booksJDBCRepository.createBook(bookDetails);
     }
 
@@ -82,17 +82,17 @@ public class LibraryMain {
         log.info("Found book: id: {}, title: {}", bookBasicInfo.getId(), bookBasicInfo.getTitle());
     }
 
-    private static void testUpdateBook(BooksJDBCRepository booksJDBCRepository) throws SQLException {
-        var bookDetails = BookDetails.builder()
-                .id(5)
-                .title("New title")
-//                .authorId(5)
-//                .categoryId(5)
-                .publisher("New publisher")
-                .releaseDate(Date.valueOf(LocalDate.of(2022,5,5)))
-                .build();
-        booksJDBCRepository.updateBook(bookDetails);
-    }
+//    private static void testUpdateBook(BooksJDBCRepository booksJDBCRepository) throws SQLException {
+//        var bookDetails = BookDetails.builder()
+//                .id(5)
+//                .title("New title")
+////                .authorId(5)
+////                .categoryId(5)
+//                .publisher("New publisher")
+//                .releaseDate(Date.valueOf(LocalDate.of(2022,5,5)))
+//                .build();
+//        booksJDBCRepository.updateBook(bookDetails);
+//    }
 
     private static void testGetBooksCount(BooksJDBCRepository booksJDBCRepository) throws SQLException {
         long booksCount = booksJDBCRepository.getBooksCount();

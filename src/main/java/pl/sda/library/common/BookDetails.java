@@ -1,31 +1,28 @@
 package pl.sda.library.common;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import javax.persistence.*;
 import java.sql.Date;
 import java.util.Set;
 
-@Builder
+
 @Getter
 @Setter
 @Entity
 @Table(name = "books")
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-@AllArgsConstructor(access = AccessLevel.PRIVATE)
-public class BookDetails {
 
-    @Id
-    private Integer id;
+public class BookDetails extends BaseEntity{
 
     @Column(length = 128)
     private String title;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "category")
     private Category category;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "author")
     private Author author;
 

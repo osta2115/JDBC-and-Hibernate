@@ -8,10 +8,7 @@ import java.time.LocalDate;
 @ToString
 @Entity
 @Table(name = "rents")
-public class Rent {
-
-    @Id
-    private Integer id;
+public class Rent extends BaseEntity{
 
     @ManyToOne
     @JoinColumn(name = "book")

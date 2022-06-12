@@ -72,7 +72,9 @@ public class BooksJpaRepository implements BooksRepository {
 
     @Override
     public void createBook(BookDetails bookDetails) throws SQLException {
-
+        entityManager.getTransaction().begin();
+        entityManager.persist(bookDetails);
+        entityManager.getTransaction().commit();
     }
 
     @Override
@@ -82,6 +84,7 @@ public class BooksJpaRepository implements BooksRepository {
 
     @Override
     public long getBooksCount() throws SQLException {
-        return 0;
+        var countQuery = entityManager.createQuery("select count(bd.id) from BookDetails bd", Long.class);
+        return countQuery.getSingleResult();
     }
 }

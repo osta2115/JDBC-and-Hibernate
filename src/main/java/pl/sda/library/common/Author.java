@@ -13,10 +13,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 @Setter
 @Entity
 @Table(name = "authors")
-public class Author {
-
-    @Id
-    private Integer id;
+public class Author extends  BaseEntity{
 
     @Column(name = "first_name", length = 32)
     private String firstName;
