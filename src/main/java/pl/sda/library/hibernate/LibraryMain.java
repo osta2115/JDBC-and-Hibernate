@@ -23,10 +23,15 @@ public class LibraryMain {
         entityManager = entityManagerFactory.createEntityManager();
         booksJpaRepository = new BooksJpaRepository(entityManager);
 
-        testDeleteBookById();
+        testGetBooksCount();
 
         entityManager.close();
         entityManagerFactory.close();
+    }
+
+    private static void testGetBooksCount() throws SQLException {
+        long booksCount = booksJpaRepository.getBooksCount();
+        log.info("Books count: {}", booksCount);
     }
 
     private static void testDeleteBookById() throws SQLException {

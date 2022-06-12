@@ -60,7 +60,7 @@ public class BooksJpaRepository implements BooksRepository {
             entityManager.remove(bookDetails);
             entityManager.getTransaction().commit();
         } catch (NoResultException e) {
-            log.warn("Cannot delete non-exist book. Book id: {}", id);
+            log.warn("Cannot delete non-existing book. Book id: {}", id);
         }
 
     }
@@ -82,6 +82,7 @@ public class BooksJpaRepository implements BooksRepository {
 
     @Override
     public long getBooksCount() throws SQLException {
-        return 0;
+        var countQuery = entityManager.createQuery("select count(bd.id) from BookDetails bd", Long.class);
+        return countQuery.getSingleResult();
     }
 }
