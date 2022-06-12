@@ -1,13 +1,14 @@
 package pl.sda.library.common;
 
-import lombok.Builder;
-import lombok.Getter;
+import lombok.*;
 
+@ToString
 @Getter
 @Builder
+@AllArgsConstructor
 public class BookBasicInfo {
 
-    private int id;
+    private Integer id;
     private String title;
 
 }

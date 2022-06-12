@@ -1,22 +1,51 @@
 package pl.sda.library.hibernate;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import pl.sda.library.common.BookBasicInfo;
 import pl.sda.library.common.BookDetails;
 import pl.sda.library.common.BooksRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.TypedQuery;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
+@RequiredArgsConstructor
 public class BooksJpaRepository implements BooksRepository {
+
+    private final EntityManager entityManager;
+
     @Override
     public Optional<BookBasicInfo> getBookBasicInfoById(int id) throws SQLException {
-        return Optional.empty();
+        var selectBookBasicInfoById = """
+            select new pl.sda.library.common.BookBasicInfo(bd.id, bd.title)
+            from BookDetails bd
+            where bd.id = :id
+            """;
+        var query = entityManager.createQuery(selectBookBasicInfoById, BookBasicInfo.class);
+        query.setParameter("id", id);
+
+        try {
+            var bookBasicInfo = query.getSingleResult();
+            return Optional.of(bookBasicInfo);
+        } catch (NoResultException e) {
+            log.warn("Could not find book by provided id: {}", id);
+            return Optional.empty();
+        }
     }
 
     @Override
     public List<BookBasicInfo> getAllBooks() throws SQLException {
-        return null;
+        var selectAllBooks = """
+                select new pl.sda.library.common.BookBasicInfo(bd.id, bd.title)
+                from BookDetails bd
+                """;
+        var query = entityManager.createQuery(selectAllBooks, BookBasicInfo.class);
+        return query.getResultList();
     }
 
     @Override
